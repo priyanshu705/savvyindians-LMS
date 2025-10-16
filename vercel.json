@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "next.config.mjs", "use": "@vercel/next" }
+  ],
+  "probes": [],
+  "routes": [
+    { "src": "/_next/static/(.*)", "dest": "/_next/static/$1" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}
