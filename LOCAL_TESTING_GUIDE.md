@@ -236,14 +236,6 @@
 ---
 
 ### 8. 📄 Footer Testing
-
-**What to Test:**
-- [ ] Footer displays on all pages
-- [ ] Footer sections visible:
-  - About SavvyIndians
-  - Quick Links (Home, Courses, About, Contact)
-  - Support (Help Center, FAQs, Contact)
-  - Legal (Privacy, Terms, Cookies)
 - [ ] All links present
 - [ ] Social media icons (if any)
 - [ ] Copyright notice
@@ -255,7 +247,6 @@
 3. Check footer links (currently mock)
 4. Verify responsive design
 5. Check on different screen sizes
-
 ---
 
 ### 9. 🎥 Video Player Testing
@@ -265,17 +256,8 @@
 - [ ] YouTube integration works
 - [ ] Video controls display
 - [ ] Play/Pause functionality
-- [ ] Volume controls
-- [ ] Fullscreen option
-- [ ] Loading state
-
-**How to Test:**
-1. Go to a course detail page
-2. Click on a lecture (if video player is visible)
-3. Test video controls
 4. Check fullscreen mode
 5. Verify responsive sizing
-
 ---
 
 ### 10. 🎨 UI/UX Testing
@@ -286,8 +268,74 @@
 - [ ] Readable fonts and sizes
 - [ ] Button hover effects
 - [ ] Card hover effects
-- [ ] Smooth transitions
 - [ ] Loading states
+## Local Testing Guide for SavvyIndians Modern LMS
+
+This guide will help you set up and run the LMS locally with real Supabase integration.
+
+### 1. Prerequisites
+
+- Node.js 18+ and npm installed ([Download Node.js](https://nodejs.org/))
+- A Supabase account ([Sign up free](https://app.supabase.com/))
+
+### 2. Clone the Repository
+
+If you haven't already:
+
+```powershell
+git clone https://github.com/priyanshu705/savvyindians-LMS.git
+cd savvyindians-LMS/savvyindians-modern-lms
+```
+
+### 3. Install Dependencies
+
+```powershell
+npm install
+```
+
+### 4. Set Up Supabase
+
+1. Go to [Supabase](https://app.supabase.com/) and create a new project.
+2. In your project dashboard, go to **SQL Editor** and run the contents of `supabase/schema.sql` to create tables and seed data.
+3. Go to **Project Settings > API** and copy:
+  - `SUPABASE_URL`
+  - `SUPABASE_ANON_KEY`
+  - (Optionally) `SUPABASE_SERVICE_ROLE_KEY` for admin features
+
+### 5. Configure Environment Variables
+
+1. Copy `.env.local.example` to `.env.local`:
+  ```powershell
+  Copy-Item .env.local.example .env.local
+  ```
+2. Open `.env.local` and paste your real Supabase keys:
+  ```env
+  NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+  NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+  SUPABASE_SERVICE_ROLE_KEY=your-service-role-key (optional)
+  ```
+
+### 6. Start the Development Server
+
+```powershell
+npm run dev
+```
+
+Visit [http://localhost:3000](http://localhost:3000) in your browser.
+
+### 7. Troubleshooting
+
+- If you see errors about missing env vars, double-check `.env.local`.
+- If the app can't connect to Supabase, ensure your keys are correct and your Supabase project is running.
+- For port issues, make sure nothing else is running on port 3000.
+
+### 8. Next Steps
+
+- To test admin features, assign the `admin` role to your user in Supabase Auth.
+- For production, set the same env vars in Vercel dashboard.
+
+---
+For more details, see `DEPLOYMENT_STEPS.md` and `supabase/schema.sql`.
 - [ ] Error states
 - [ ] Success states
 

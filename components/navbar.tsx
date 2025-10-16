@@ -5,39 +5,28 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
 import { useEffect, useState } from 'react'
+import { useUserRole } from '@/lib/auth/useUserRole'
 import { User } from '@supabase/supabase-js'
 import { BookOpen, LogOut, User as UserIcon } from 'lucide-react'
-import { createServerClient } from '@supabase/ssr'
 
 export default function Navbar() {
   const router = useRouter()
   const supabase = createClient()
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
-  const [role, setRole] = useState<string | null>(null)
+
+  const { role, loading: roleLoading } = useUserRole()
 
   useEffect(() => {
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       setUser(user)
       setLoading(false)
-      if (user) {
-        try {
-          const resp = await fetch('/api/profile')
-          const json = await resp.json()
-          setRole(json?.role ?? null)
-        } catch (err) {
-          // ignore
-        }
-      }
     }
-
     getUser()
-
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
     })
-
     return () => subscription.unsubscribe()
   }, [supabase.auth])
 
@@ -70,7 +59,7 @@ export default function Navbar() {
                 My Courses
               </Link>
             )}
-            {role === 'admin' || role === 'instructor' ? (
+            {roleLoading ? null : (role === 'admin' || role === 'instructor') ? (
               <Link href="/(admin)/create-course" className="text-sm font-medium hover:text-primary transition-colors">
                 Admin
               </Link>
